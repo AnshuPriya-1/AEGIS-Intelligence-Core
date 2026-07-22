@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from app.routers import agents
 
 from app.config import get_settings
 from app.database import Base, engine, SessionLocal
@@ -23,6 +24,7 @@ app.add_middleware(
 app.include_router(data.router)
 app.include_router(simulate.router)
 app.include_router(auth.router)
+app.include_router(agents.router)
 
 scheduler = AsyncIOScheduler()
 
