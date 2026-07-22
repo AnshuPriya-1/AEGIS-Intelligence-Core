@@ -6,6 +6,7 @@ import { Badge } from '../atoms/Badge';
 import { EmptyState } from '../atoms/EmptyState';
 import { Search, X, Globe, Anchor, FileText, Brain, Radio, CalendarClock, SearchX } from 'lucide-react';
 import countriesData from '../../data/countries.json';
+import worldCountries from '../../data/worldCountries.json';
 import portsData from '../../data/ports.json';
 import reportsData from '../../data/reports.json';
 import signalsData from '../../data/signals.json';
@@ -19,6 +20,17 @@ const CATEGORY_META = {
   Signals: { icon: Radio, color: 'signal' },
   Events: { icon: CalendarClock, color: 'warning' },
 };
+
+// countries.json only carries deep-dive intelligence for a handful of
+// strategically modeled nations; worldCountries.json (derived from real
+// country boundary data) covers every nation so search — and the globe's
+// fly-to — works for anything, e.g. "India", not just the curated set.
+const NAME_ALIASES = { 'united states': 'united states of america' };
+function normalizeName(name) {
+  const n = (name || '').toLowerCase().trim();
+  return NAME_ALIASES[n] || n;
+}
+const curatedByName = new Map(countriesData.map((c) => [normalizeName(c.name), c]));
 
 export function GlobalSearchModal() {
   const { globalSearchOpen, setGlobalSearchOpen, setActiveTab, setAiMemoryOpen, setReportModalOpen, setFocusTarget } = useApp();
@@ -41,18 +53,21 @@ export function GlobalSearchModal() {
     const q = query.trim().toLowerCase();
     if (!q) return {};
 
-    const countries = countriesData
-      .filter((c) => c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q))
-      .map((c) => ({
-        id: c.code,
-        label: c.name,
-        sub: `Risk ${c.riskScore} · ${c.production}`,
-        status: c.status,
-        lat: c.lat,
-        lng: c.lng,
-        kind: 'country',
-        meta: c,
-      }));
+    const countries = worldCountries
+      .filter((c) => c.name.toLowerCase().includes(q))
+      .map((c) => {
+        const curated = curatedByName.get(normalizeName(c.name));
+        return {
+          id: c.id,
+          label: c.name,
+          sub: curated ? `Risk ${curated.riskScore} · ${curated.production}` : 'Geographic reference · no risk profile modeled',
+          status: curated ? curated.status : 'signal',
+          lat: c.lat,
+          lng: c.lng,
+          kind: 'country',
+          meta: curated || { name: c.name, noProfile: true },
+        };
+      });
 
     const ports = portsData
       .filter((p) => p.name.toLowerCase().includes(q) || p.country.toLowerCase().includes(q))

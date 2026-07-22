@@ -1,24 +1,42 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
+import ThreeGlobe from 'three-globe';
+import { feature } from 'topojson-client';
 import { useApp } from '../../context/AppContext';
 import { useTheme } from '../../context/ThemeContext';
 import { GlassPanel } from '../atoms/GlassPanel';
 import { Badge } from '../atoms/Badge';
-import { Layers, Eye, RefreshCw, ZoomIn, ZoomOut, Compass, Navigation, X, MapPin } from 'lucide-react';
+import { RefreshCw, Navigation, X, MapPin } from 'lucide-react';
 import portsData from '../../data/ports.json';
 import routesData from '../../data/routes.json';
 import countriesData from '../../data/countries.json';
-import worldLandMask from '../../assets/world-land-mask.png';
+import worldCountries from '../../data/Worldcountries.json';
+import earthDayTexture from '../../assets/earth-day.jpg';
+import earthNightTexture from '../../assets/earth-night.jpg';
+import earthBumpTexture from '../../assets/earth-bump.png';
 
-// Convert lat/lng (degrees) to a position on a sphere of the given radius.
-// Matches the UV unwrap of THREE.SphereGeometry so texture + markers line up.
-function latLngToVector(lat, lng, radius) {
-  const phi = (90 - lat) * (Math.PI / 180);
-  const theta = (lng + 180) * (Math.PI / 180);
-  const x = -(radius * Math.sin(phi) * Math.cos(theta));
-  const z = radius * Math.sin(phi) * Math.sin(theta);
-  const y = radius * Math.cos(phi);
-  return new THREE.Vector3(x, y, z);
+// Full-resolution country boundaries, served statically (not bundled into the
+// JS chunk — it's ~740KB, fetched once and cached by the browser) so every
+// nation renders with its real shape, not just the ~6 we have curated
+// intelligence data for.
+const COUNTRY_TOPO_URL = '/geo/countries-50m.json';
+
+// The curated intelligence dataset (countries.json) uses a couple of names
+// that don't match Natural Earth's naming exactly — bridge those here.
+const NAME_ALIASES = { 'united states': 'united states of america' };
+function normalizeName(name) {
+  const n = (name || '').toLowerCase().trim();
+  return NAME_ALIASES[n] || n;
+}
+
+const curatedByName = new Map(countriesData.map((c) => [normalizeName(c.name), c]));
+const centroidByName = new Map(worldCountries.map((c) => [normalizeName(c.name), c]));
+
+function statusColor(status) {
+  if (status === 'danger') return '#ff4757';
+  if (status === 'warning') return '#ffb800';
+  if (status === 'signal') return '#00d9c0';
+  return '#64748b';
 }
 
 export function GlobePanel() {
@@ -26,24 +44,40 @@ export function GlobePanel() {
   const { theme } = useTheme();
   const { globeLayers, toggleGlobeLayer, focusTarget, focusRequestId, setFocusTarget } = useApp();
   const [autoRotate, setAutoRotate] = useState(true);
-  const [selected, setSelected] = useState(null); // { label, sub, status, kind }
+  const [selected, setSelected] = useState(null); // { label, kind, meta }
+  const [countryFeatures, setCountryFeatures] = useState(null);
 
-  // Refs shared between the setup effect and the "fly to focus target" effect
   const globeGroupRef = useRef(null);
+  const globeInstanceRef = useRef(null);
   const cameraRef = useRef(null);
-  const targetQuatRef = useRef(null); // THREE.Quaternion | null -> when set, animate loop slerps toward it
-  const highlightRef = useRef(null); // pulsing marker mesh shown at the focused location
+  const targetQuatRef = useRef(null);
+  const selectedNameRef = useRef(null);
+
+  // Load real country boundary shapes once (shared across theme/layer re-renders)
+  useEffect(() => {
+    let cancelled = false;
+    fetch(COUNTRY_TOPO_URL)
+      .then((res) => res.json())
+      .then((topo) => {
+        if (cancelled) return;
+        const geo = feature(topo, topo.objects.countries);
+        setCountryFeatures(geo.features.filter((f) => f.properties?.name && f.properties.name !== 'Antarctica'));
+      })
+      .catch((err) => console.error('[GlobePanel] failed to load country boundaries:', err));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !countryFeatures) return;
 
     const width = containerRef.current.clientWidth;
     const height = containerRef.current.clientHeight;
 
-    // Scene, Camera, Renderer Setup
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.z = 240;
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 2000);
+    camera.position.z = 300;
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -51,193 +85,89 @@ export function GlobePanel() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
 
-    // Globe Group
     const globeGroup = new THREE.Group();
     scene.add(globeGroup);
     globeGroupRef.current = globeGroup;
 
-    // Dark vs Light Mode Adaptation
     const isDark = theme === 'dark';
-    const sphereBgColor = isDark ? 0x0c141d : 0xe2e8f0;
-    const wireframeColor = isDark ? 0x1f2e3d : 0xcbdfeb;
-    const atmosphereColor = isDark ? 0x00d9c0 : 0x00a896;
-    const landColor = isDark ? 0x123326 : 0x0f766e;
+    const atmosphereColor = isDark ? '#00d9c0' : '#0f766e';
 
-    // 1. Globe Sphere (ocean base)
-    const geometry = new THREE.SphereGeometry(70, 64, 64);
-    const material = new THREE.MeshPhongMaterial({
-      color: sphereBgColor,
-      emissive: isDark ? 0x081018 : 0xf1f5f9,
-      shininess: 25,
-      wireframe: false,
-    });
-    const earthMesh = new THREE.Mesh(geometry, material);
-    globeGroup.add(earthMesh);
+    // Real, photorealistic globe (day/night texture + terrain bump + atmosphere),
+    // replacing the old hand-rolled sphere. This is the same `three-globe`
+    // package that was already listed in package.json but never actually used.
+    const globeInstance = new ThreeGlobe()
+      .globeImageUrl(isDark ? earthNightTexture : earthDayTexture)
+      .bumpImageUrl(earthBumpTexture)
+      .showAtmosphere(true)
+      .atmosphereColor(atmosphereColor)
+      .atmosphereAltitude(0.16)
+      .showGraticules(true);
 
-    // 1b. Real continent shapes, projected from actual world land-mass data
-    // (equirectangular texture, transparent ocean so the base sphere color shows through)
-    const textureLoader = new THREE.TextureLoader();
-    const landTexture = textureLoader.load(worldLandMask);
-    landTexture.colorSpace = THREE.SRGBColorSpace;
-    const landGeo = new THREE.SphereGeometry(70.15, 64, 64);
-    const landMat = new THREE.MeshPhongMaterial({
-      map: landTexture,
-      transparent: true,
-      color: landColor,
-      emissive: landColor,
-      emissiveIntensity: isDark ? 0.35 : 0.15,
-      shininess: 10,
-      depthWrite: false,
-    });
-    const landMesh = new THREE.Mesh(landGeo, landMat);
-    globeGroup.add(landMesh);
-
-    // 2. Grid Wireframe Overlay
-    const wireframeMat = new THREE.MeshBasicMaterial({
-      color: wireframeColor,
-      wireframe: true,
-      transparent: true,
-      opacity: isDark ? 0.35 : 0.45,
-    });
-    const wireframeMesh = new THREE.Mesh(geometry, wireframeMat);
-    wireframeMesh.scale.set(1.006, 1.006, 1.006);
-    globeGroup.add(wireframeMesh);
-
-    // 3. Atmosphere Glow Outer Ring
-    const atmosphereGeo = new THREE.SphereGeometry(74, 32, 32);
-    const atmosphereMat = new THREE.MeshBasicMaterial({
-      color: atmosphereColor,
-      transparent: true,
-      opacity: isDark ? 0.12 : 0.08,
-      side: THREE.BackSide,
-    });
-    const atmosphereMesh = new THREE.Mesh(atmosphereGeo, atmosphereMat);
-    scene.add(atmosphereMesh);
-
-    // Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, isDark ? 0.8 : 1.2);
-    scene.add(ambientLight);
-
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, isDark ? 1.5 : 1.0);
-    dirLight1.position.set(200, 100, 200);
-    scene.add(dirLight1);
-
-    const dirLight2 = new THREE.DirectionalLight(0x00d9c0, isDark ? 0.8 : 0.4);
-    dirLight2.position.set(-200, -100, -100);
-    scene.add(dirLight2);
-
-    // 4. Strategic Ports Markers & Pulsing Rings (clickable)
-    const portMeshes = [];
-    if (globeLayers.strategicPorts) {
-      portsData.forEach((port) => {
-        const pos = latLngToVector(port.lat, port.lng, 70.8);
-        const portGroup = new THREE.Group();
-        portGroup.position.copy(pos);
-
-        const dotGeo = new THREE.SphereGeometry(port.riskLevel === 'danger' ? 1.8 : 1.2, 16, 16);
-        const dotMat = new THREE.MeshBasicMaterial({
-          color: port.riskLevel === 'danger' ? 0xff4757 : port.riskLevel === 'warning' ? 0xffb800 : 0x00d9c0,
-        });
-        const dotMesh = new THREE.Mesh(dotGeo, dotMat);
-        dotMesh.userData = { kind: 'port', ...port };
-        portGroup.add(dotMesh);
-
-        // Bigger invisible hit-area sphere so ports are easy to click
-        const hitGeo = new THREE.SphereGeometry(3.2, 8, 8);
-        const hitMat = new THREE.MeshBasicMaterial({ visible: false });
-        const hitMesh = new THREE.Mesh(hitGeo, hitMat);
-        hitMesh.userData = { kind: 'port', ...port };
-        portGroup.add(hitMesh);
-
-        const ringGeo = new THREE.RingGeometry(2, 2.6, 32);
-        const ringMat = new THREE.MeshBasicMaterial({
-          color: port.riskLevel === 'danger' ? 0xff4757 : 0x00d9c0,
-          side: THREE.DoubleSide,
-          transparent: true,
-          opacity: 0.7,
-        });
-        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-        ringMesh.lookAt(new THREE.Vector3(0, 0, 0));
-        portGroup.add(ringMesh);
-
-        portGroup.userData = { kind: 'port', ...port };
-        portMeshes.push(dotMesh, hitMesh);
-        globeGroup.add(portGroup);
-      });
-    }
-
-    // 4b. Country Markers (clickable pins for the countries in the intelligence DB)
-    const countryMeshes = [];
+    // Real country boundary shapes (accurate geography, not a texture guess)
     if (globeLayers.countries !== false) {
-      countriesData.forEach((country) => {
-        if (country.lat == null || country.lng == null) return;
-        const pos = latLngToVector(country.lat, country.lng, 70.8);
-        const pinGeo = new THREE.ConeGeometry(1.1, 3, 12);
-        const color = country.status === 'danger' ? 0xff4757 : country.status === 'warning' ? 0xffb800 : 0x38bdf8;
-        const pinMat = new THREE.MeshBasicMaterial({ color });
-        const pinMesh = new THREE.Mesh(pinGeo, pinMat);
-        pinMesh.position.copy(pos);
-        pinMesh.lookAt(0, 0, 0);
-        pinMesh.rotateX(Math.PI / 2);
-        pinMesh.userData = { kind: 'country', ...country };
-
-        const hitGeo = new THREE.SphereGeometry(3, 8, 8);
-        const hitMat = new THREE.MeshBasicMaterial({ visible: false });
-        const hitMesh = new THREE.Mesh(hitGeo, hitMat);
-        hitMesh.position.copy(pos);
-        hitMesh.userData = { kind: 'country', ...country };
-
-        countryMeshes.push(pinMesh, hitMesh);
-        globeGroup.add(pinMesh);
-        globeGroup.add(hitMesh);
-      });
+      globeInstance
+        .polygonsData(countryFeatures)
+        .polygonCapColor((feat) => {
+          const meta = curatedByName.get(normalizeName(feat.properties.name));
+          return meta ? `${statusColor(meta.status)}cc` : 'rgba(148,163,184,0.35)';
+        })
+        .polygonSideColor(() => 'rgba(0,0,0,0.18)')
+        .polygonStrokeColor(() => (isDark ? '#1f2e3d' : '#94a3b8'))
+        .polygonAltitude((feat) => (feat.properties.name === selectedNameRef.current ? 0.02 : 0.006))
+        .polygonsTransitionDuration(300);
     }
 
-    // 5. Shipping Arcs & Energy Flow
+    // Strategic chokepoint/port markers
+    if (globeLayers.strategicPorts) {
+      globeInstance
+        .pointsData(portsData)
+        .pointLat('lat')
+        .pointLng('lng')
+        .pointColor((p) => statusColor(p.riskLevel === 'danger' ? 'danger' : p.riskLevel === 'warning' ? 'warning' : 'signal'))
+        .pointAltitude(0.015)
+        .pointRadius((p) => (p.riskLevel === 'danger' ? 0.6 : 0.4));
+    }
+
+    // Shipping / energy flow arcs
     if (globeLayers.shippingRoutes || globeLayers.energyFlow) {
-      routesData.forEach((route) => {
-        const start = latLngToVector(route.startLat, route.startLng, 71);
-        const end = latLngToVector(route.endLat, route.endLng, 71);
-
-        const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-        const distance = start.distanceTo(end);
-        mid.setLength(70 + distance * 0.35);
-
-        const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-        const points = curve.getPoints(50);
-        const curveGeometry = new THREE.BufferGeometry().setFromPoints(points);
-
-        const curveMaterial = new THREE.LineBasicMaterial({
-          color: route.status === 'danger' ? 0xff4757 : route.status === 'warning' ? 0xffb800 : 0x00d9c0,
-          linewidth: route.stroke || 2,
-          transparent: true,
-          opacity: isDark ? 0.8 : 0.9,
-        });
-
-        const line = new THREE.Line(curveGeometry, curveMaterial);
-        globeGroup.add(line);
-      });
+      globeInstance
+        .arcsData(routesData)
+        .arcColor((r) => r.color || statusColor(r.status))
+        .arcStroke((r) => r.stroke || 1.5)
+        .arcDashLength(0.4)
+        .arcDashGap(0.2)
+        .arcDashAnimateTime(4000)
+        .arcAltitudeAutoScale(0.4);
     }
 
-    // 6. Highlight marker shown at whatever location is currently focused (search result / click)
-    const highlightGeo = new THREE.RingGeometry(3, 4.2, 32);
-    const highlightMat = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0,
-    });
-    const highlightMesh = new THREE.Mesh(highlightGeo, highlightMat);
-    highlightMesh.visible = false;
-    globeGroup.add(highlightMesh);
-    highlightRef.current = highlightMesh;
+    globeGroup.add(globeInstance);
+    globeInstanceRef.current = globeInstance;
 
-    // Interactive Dragging, Click-to-select, and Auto Rotate Logic
+    // Lighting
+    scene.add(new THREE.AmbientLight(0xffffff, isDark ? 0.9 : 1.3));
+    const dirLight = new THREE.DirectionalLight(0xffffff, isDark ? 1.2 : 1.0);
+    dirLight.position.set(200, 150, 200);
+    scene.add(dirLight);
+    const rimLight = new THREE.DirectionalLight(0x00d9c0, isDark ? 0.6 : 0.3);
+    rimLight.position.set(-200, -100, -150);
+    scene.add(rimLight);
+
+    // Interaction: drag-to-rotate + click-to-select (same proven approach as before,
+    // now raycasting against the ThreeGlobe instance's own generated meshes)
     let isDragging = false;
     let dragDistance = 0;
     let previousMousePosition = { x: 0, y: 0 };
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
+
+    const findData = (object) => {
+      let obj = object;
+      for (let i = 0; i < 8 && obj; i++) {
+        if (obj.__data) return obj.__data;
+        obj = obj.parent;
+      }
+      return null;
+    };
 
     const handleMouseDown = (e) => {
       isDragging = true;
@@ -247,15 +177,10 @@ export function GlobePanel() {
 
     const handleMouseMove = (e) => {
       if (!isDragging) return;
-      const deltaMove = {
-        x: e.clientX - previousMousePosition.x,
-        y: e.clientY - previousMousePosition.y,
-      };
+      const deltaMove = { x: e.clientX - previousMousePosition.x, y: e.clientY - previousMousePosition.y };
       dragDistance += Math.abs(deltaMove.x) + Math.abs(deltaMove.y);
-
       globeGroup.rotation.y += deltaMove.x * 0.005;
       globeGroup.rotation.x += deltaMove.y * 0.005;
-
       previousMousePosition = { x: e.clientX, y: e.clientY };
     };
 
@@ -264,25 +189,38 @@ export function GlobePanel() {
       pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
       pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(pointer, camera);
-      const hits = raycaster.intersectObjects([...portMeshes, ...countryMeshes], false);
-      return hits.length > 0 ? hits[0].object.userData : null;
+      const hits = raycaster.intersectObjects(globeInstance.children, true);
+      for (const hit of hits) {
+        const data = findData(hit.object);
+        if (data) return data;
+      }
+      return null;
     };
 
     const handleMouseUp = (e) => {
       isDragging = false;
-      // Treat as a click (not a drag) if the pointer barely moved
       if (dragDistance < 4 && e && e.target === renderer.domElement) {
-        const hit = pickAt(e.clientX, e.clientY);
-        if (hit) {
-          setAutoRotate(false);
+        const data = pickAt(e.clientX, e.clientY);
+        if (!data) return;
+        setAutoRotate(false);
+
+        if (data.type === 'Feature') {
+          // A country polygon
+          const name = data.properties.name;
+          const curated = curatedByName.get(normalizeName(name));
+          const centroid = centroidByName.get(normalizeName(name));
+          if (!centroid) return;
           setFocusTarget({
-            id: hit.id || hit.code,
-            label: hit.name,
-            lat: hit.lat,
-            lng: hit.lng,
-            kind: hit.kind,
-            meta: hit,
+            id: data.id || name,
+            label: name,
+            lat: centroid.lat,
+            lng: centroid.lng,
+            kind: 'country',
+            meta: curated || { name, noProfile: true },
           });
+        } else if (data.lat != null && data.lng != null) {
+          // A port marker
+          setFocusTarget({ id: data.id, label: data.name, lat: data.lat, lng: data.lng, kind: 'port', meta: data });
         }
       }
     };
@@ -292,7 +230,6 @@ export function GlobePanel() {
     domElem.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
 
-    // Animation Loop
     let animationFrameId;
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
@@ -304,21 +241,13 @@ export function GlobePanel() {
           targetQuatRef.current = null;
         }
       } else if (autoRotate && !isDragging) {
-        globeGroup.rotation.y += 0.002;
-      }
-
-      // Pulse the highlight ring
-      if (highlightMesh.visible) {
-        const t = (Date.now() % 1500) / 1500;
-        highlightMesh.scale.setScalar(1 + t * 1.2);
-        highlightMat.opacity = 0.9 * (1 - t);
+        globeGroup.rotation.y += 0.0015;
       }
 
       renderer.render(scene, camera);
     };
     animate();
 
-    // Resize Handler
     const handleResize = () => {
       if (!containerRef.current) return;
       const w = containerRef.current.clientWidth;
@@ -332,54 +261,54 @@ export function GlobePanel() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
-      if (domElem) {
-        domElem.removeEventListener('mousedown', handleMouseDown);
-        domElem.removeEventListener('mousemove', handleMouseMove);
-      }
+      domElem.removeEventListener('mousedown', handleMouseDown);
+      domElem.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
       if (containerRef.current && renderer.domElement) {
         containerRef.current.removeChild(renderer.domElement);
       }
+      renderer.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [theme, globeLayers]);
+  }, [theme, globeLayers, countryFeatures]);
 
-  // Fly the globe to whatever focusTarget was set (by search, or by clicking a marker)
+  // Fly to whatever focusTarget was set (search result or a click)
   useEffect(() => {
     if (!focusTarget || focusTarget.lat == null || focusTarget.lng == null) return;
     const group = globeGroupRef.current;
-    if (!group) return;
+    const globeInstance = globeInstanceRef.current;
+    if (!group || !globeInstance) return;
 
-    // Direction of the target point on an un-rotated sphere
-    const dir = latLngToVector(focusTarget.lat, focusTarget.lng, 1).normalize();
-    // We want that point to end up facing the camera, i.e. pointing toward +Z
+    const raw = globeInstance.getCoords(focusTarget.lat, focusTarget.lng, 0);
+    const dir = new THREE.Vector3(raw.x, raw.y, raw.z).normalize();
     const forward = new THREE.Vector3(0, 0, 1);
-    const targetQuat = new THREE.Quaternion().setFromUnitVectors(dir, forward);
-    targetQuatRef.current = targetQuat;
+    targetQuatRef.current = new THREE.Quaternion().setFromUnitVectors(dir, forward);
     setAutoRotate(false);
 
-    if (highlightRef.current) {
-      highlightRef.current.position.copy(latLngToVector(focusTarget.lat, focusTarget.lng, 71.2));
-      highlightRef.current.lookAt(0, 0, 0);
-      highlightRef.current.visible = true;
-    }
+    // Pulse a ring at the exact focused coordinate
+    globeInstance.ringsData([
+      { lat: focusTarget.lat, lng: focusTarget.lng, color: '#ffffff', maxR: 6, propagationSpeed: 4, repeatPeriod: 1100 },
+    ]);
 
-    setSelected({
-      label: focusTarget.label,
-      kind: focusTarget.kind,
-      meta: focusTarget.meta,
-    });
+    // Raise the selected country's polygon slightly so its shape stands out
+    selectedNameRef.current = focusTarget.kind === 'country' ? focusTarget.label : null;
+    globeInstance.polygonAltitude((feat) => (feat.properties.name === selectedNameRef.current ? 0.025 : 0.006));
+
+    setSelected({ label: focusTarget.label, kind: focusTarget.kind, meta: focusTarget.meta });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusRequestId]);
 
   const closeSelection = () => {
     setSelected(null);
-    if (highlightRef.current) highlightRef.current.visible = false;
+    selectedNameRef.current = null;
+    if (globeInstanceRef.current) {
+      globeInstanceRef.current.ringsData([]);
+      globeInstanceRef.current.polygonAltitude(() => 0.006);
+    }
   };
 
   return (
     <GlassPanel className="relative h-[560px] flex flex-col justify-between overflow-hidden p-0">
-      {/* Globe Controls & Layer Toggles Header */}
       <div className="absolute top-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
         <div className="flex items-center space-x-2 bg-[var(--panel)]/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-[var(--border)] pointer-events-auto">
           <Navigation className="w-4 h-4 text-[var(--signal)] animate-spin-slow" />
@@ -389,7 +318,6 @@ export function GlobePanel() {
           <span className="w-2 h-2 rounded-full bg-[var(--signal)] animate-ping" />
         </div>
 
-        {/* Layer Controls */}
         <div className="flex items-center space-x-1.5 bg-[var(--panel)]/90 backdrop-blur-md p-1 rounded-lg border border-[var(--border)] pointer-events-auto">
           <button
             onClick={() => toggleGlobeLayer('shippingRoutes')}
@@ -423,9 +351,7 @@ export function GlobePanel() {
           </button>
           <button
             onClick={() => setAutoRotate(!autoRotate)}
-            className={`p-1.5 rounded text-[11px] transition-all ${
-              autoRotate ? 'text-[var(--signal)]' : 'text-[var(--muted)]'
-            }`}
+            className={`p-1.5 rounded text-[11px] transition-all ${autoRotate ? 'text-[var(--signal)]' : 'text-[var(--muted)]'}`}
             title="Toggle Auto Rotate"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${autoRotate ? 'animate-spin-slow' : ''}`} />
@@ -433,10 +359,14 @@ export function GlobePanel() {
         </div>
       </div>
 
-      {/* Three.js Canvas Container */}
       <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
-      {/* Selected Location Detail Card */}
+      {!countryFeatures && (
+        <div className="absolute inset-0 flex items-center justify-center text-xs font-mono text-[var(--muted)]">
+          Loading world geography...
+        </div>
+      )}
+
       {selected && (
         <div className="absolute top-16 right-4 z-20 w-64 bg-[var(--panel)]/95 backdrop-blur-md border border-[var(--border)] rounded-lg shadow-xl p-3">
           <div className="flex items-start justify-between mb-1.5">
@@ -449,14 +379,20 @@ export function GlobePanel() {
             </button>
           </div>
           {selected.kind === 'country' ? (
-            <div className="space-y-1 text-[11px] font-mono text-[var(--muted)]">
-              <div className="flex justify-between">
-                <span>Risk Score</span>
-                <Badge variant={selected.meta.status}>{selected.meta.riskScore}</Badge>
+            selected.meta?.noProfile ? (
+              <p className="text-[11px] leading-snug text-[var(--muted)] normal-case">
+                Geographic reference only — no curated intelligence profile is modeled for this country yet.
+              </p>
+            ) : (
+              <div className="space-y-1 text-[11px] font-mono text-[var(--muted)]">
+                <div className="flex justify-between">
+                  <span>Risk Score</span>
+                  <Badge variant={selected.meta.status}>{selected.meta.riskScore}</Badge>
+                </div>
+                <div className="flex justify-between"><span>Production</span><span className="text-[var(--text)]">{selected.meta.production}</span></div>
+                <div className="flex justify-between"><span>Reserves Cover</span><span className="text-[var(--text)]">{selected.meta.reserves}</span></div>
               </div>
-              <div className="flex justify-between"><span>Production</span><span className="text-[var(--text)]">{selected.meta.production}</span></div>
-              <div className="flex justify-between"><span>Reserves Cover</span><span className="text-[var(--text)]">{selected.meta.reserves}</span></div>
-            </div>
+            )
           ) : (
             <div className="space-y-1 text-[11px] font-mono text-[var(--muted)]">
               <div className="flex justify-between">
@@ -473,7 +409,6 @@ export function GlobePanel() {
         </div>
       )}
 
-      {/* Floating Ports Quick Legend Bar */}
       <div className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
         <div className="bg-[var(--panel)]/90 backdrop-blur-md px-3 py-2 rounded-lg border border-[var(--border)] pointer-events-auto flex items-center space-x-4 text-[11px] font-mono">
           <div className="flex items-center space-x-1.5">
