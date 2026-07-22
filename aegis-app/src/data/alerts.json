@@ -8,7 +8,7 @@
     "coordinates": [26.5667, 56.25],
     "chokepoint": "Strait of Hormuz",
     "impact": "HIGH",
-    "summary": "Satellite synthetic aperture radar (SAR) detected 14 non-commercial naval vessels entering maritime corridor Alpha.",
+    "summary": "Satellite radar detected 14 unidentified naval vessels entering the strait.",
     "agentAssigned": "GeoRisk-X",
     "status": "ACTIVE_INVESTIGATION"
   },
@@ -34,7 +34,7 @@
     "coordinates": [56.5, 3.2],
     "chokepoint": "Trans-North Sea Pipeline",
     "impact": "CRITICAL",
-    "summary": "Anomalous SCADA network packet signatures identified at pressure control sub-station B.",
+    "summary": "Unusual network activity detected in the pipeline's control system at pressure station B.",
     "agentAssigned": "GridGuard AI",
     "status": "MITIGATED"
   },

@@ -26,17 +26,35 @@ export function Sidebar({ activeTab, setActiveTab }) {
     setMobileMenuOpen,
     setAiMemoryOpen,
     setGlobalSearchOpen,
+    setReportModalOpen,
   } = useApp();
 
+  // Everything lives on one page now — these jump to a section instead of
+  // swapping in a duplicate full-screen view of the same component.
   const navItems = [
     { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
-    { id: 'globe', label: 'Digital Twin Globe', icon: Globe },
-    { id: 'risk', label: 'Risk Intelligence', icon: ShieldAlert },
-    { id: 'agents', label: 'AI Autonomous Agents', icon: Bot },
+    { id: 'globe', label: 'Global Map', icon: Globe },
+    { id: 'risk', label: 'Risk & Decisions', icon: ShieldAlert },
+    { id: 'agents', label: 'AI Agents', icon: Bot },
     { id: 'markets', label: 'Energy Markets', icon: TrendingUp },
-    { id: 'analytics', label: 'Advanced Analytics', icon: BarChart3 },
-    { id: 'reports', label: 'Intelligence Reports', icon: FileText },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'reports', label: 'Executive Brief', icon: FileText, action: () => setReportModalOpen(true) },
   ];
+
+  const handleNavClick = (item) => {
+    setMobileMenuOpen(false);
+    if (item.action) {
+      item.action();
+      return;
+    }
+    setActiveTab(item.id);
+    const target = document.getElementById(item.id);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   // Module 2: panel-opening shortcuts (not full-page tabs)
   const panelItems = [
@@ -55,10 +73,7 @@ export function Sidebar({ activeTab, setActiveTab }) {
             return (
               <button
                 key={item.id}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  setMobileMenuOpen(false);
-                }}
+                onClick={() => handleNavClick(item)}
                 className={`w-full flex items-center ${
                   sidebarCollapsed ? 'justify-center px-2' : 'px-3'
                 } py-2.5 rounded-lg text-xs font-medium transition-all relative ${

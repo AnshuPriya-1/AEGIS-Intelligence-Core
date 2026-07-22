@@ -14,10 +14,10 @@ export function DecisionComparison() {
         <div className="flex items-center space-x-2">
           <Award className="w-4 h-4 text-[var(--signal)]" />
           <h3 className="text-sm font-semibold font-display tracking-wide uppercase text-[var(--text)]">
-            Strategic Mitigation Decision Matrix
+            Compare Response Options
           </h3>
         </div>
-        <span className="text-xs font-mono text-[var(--signal)] font-bold">3 OPTIONS EVALUATED</span>
+        <span className="text-xs font-mono text-[var(--signal)] font-bold">3 OPTIONS</span>
       </div>
 
       {/* Side-by-side Options */}

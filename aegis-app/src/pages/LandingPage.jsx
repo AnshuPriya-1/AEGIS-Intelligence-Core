@@ -38,7 +38,7 @@ export function LandingPage({ onEnterDashboard, onGoLogin }) {
 
         <div className="flex items-center space-x-3">
           <Button variant="ghost" size="sm" onClick={onGoLogin} icon={Lock}>
-            Login Clearance
+            Sign In
           </Button>
           <Button variant="primary" size="sm" onClick={onEnterDashboard} icon={ArrowRight}>
             Command Center
@@ -91,7 +91,7 @@ export function LandingPage({ onEnterDashboard, onGoLogin }) {
             icon={Lock}
             className="px-6 py-4 text-base"
           >
-            Clearance Portal
+            Sign In
           </Button>
         </motion.div>
 
@@ -117,7 +117,8 @@ export function LandingPage({ onEnterDashboard, onGoLogin }) {
               AI Autonomous Agent Fleet
             </h3>
             <p className="text-xs text-[var(--muted)]">
-              Multi-agent SCADA cyber monitoring, geopolitical threat scoring, and automated SPR release simulation.
+              Specialized AI agents watch pipeline systems, score geopolitical risk, and simulate reserve
+              releases — around the clock.
             </p>
           </div>
 
@@ -129,7 +130,7 @@ export function LandingPage({ onEnterDashboard, onGoLogin }) {
               Mission Critical Analytics
             </h3>
             <p className="text-xs text-[var(--muted)]">
-              Palantir & Bloomberg terminal inspired interface built for military-grade energy governance.
+              Live risk scoring, scenario simulation, and one-click executive reporting — all in a single view.
             </p>
           </div>
         </div>
@@ -137,8 +138,8 @@ export function LandingPage({ onEnterDashboard, onGoLogin }) {
 
       {/* Footer */}
       <footer className="px-6 py-4 border-t border-[var(--border)]/40 text-center text-xs font-mono text-[var(--muted)] relative z-10 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <span>AEGIS Autonomous Governance System — Level 5 Classified</span>
-        <span className="text-[var(--signal)]">CLASSIFIED // FOR OFFICIAL USE ONLY</span>
+        <span>AEGIS — Autonomous Energy Governance & Intelligence System</span>
+        <span className="text-[var(--signal)]">ET AI Hackathon 2.0 — Prototype</span>
       </footer>
     </div>
   );

@@ -12,7 +12,7 @@ export function AlertCenter() {
         <div className="flex items-center space-x-2">
           <ShieldAlert className="w-4 h-4 text-[var(--danger)]" />
           <h3 className="text-sm font-semibold font-display tracking-wide uppercase text-[var(--text)]">
-            Active Intelligence Alerts
+            Active Alerts
           </h3>
         </div>
         <span className="text-xs font-mono font-bold text-[var(--danger)] bg-[var(--danger)]/15 px-2 py-0.5 rounded border border-[var(--danger)]/30">

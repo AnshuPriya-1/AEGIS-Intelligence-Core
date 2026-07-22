@@ -11,9 +11,9 @@ export function TimeMachine({ onTimeChange }) {
   const [speed, setSpeed] = useState(1);
 
   const eventMarkers = [
-    { index: 0, time: '00:00', label: 'Baseline Sync' },
-    { index: 2, time: '08:00', label: 'SAR Radar Probe' },
-    { index: 4, time: '14:30', label: 'Hormuz Patrol Alert' },
+    { index: 0, time: '00:00', label: 'Normal Conditions' },
+    { index: 2, time: '08:00', label: 'First Signal Detected' },
+    { index: 4, time: '14:30', label: 'Hormuz Alert' },
   ];
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export function TimeMachine({ onTimeChange }) {
         <div className="flex items-center space-x-2">
           <Clock className="w-4 h-4 text-[var(--signal)]" />
           <h3 className="text-xs font-bold font-display tracking-wider uppercase text-[var(--text)]">
-            National Intelligence Time Machine
+            Replay Recent History
           </h3>
         </div>
 

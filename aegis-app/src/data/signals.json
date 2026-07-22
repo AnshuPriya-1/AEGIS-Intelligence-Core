@@ -2,37 +2,37 @@
   {
     "id": "SIG-1092",
     "timestamp": "14:29:44",
-    "source": "AIS_SATELLITE_FEED",
-    "signal": "Tanker 'OCEANIC PRIDE' diverted route away from Hormuz entrance",
+    "source": "Ship Tracking (AIS)",
+    "signal": "Tanker 'Oceanic Pride' diverted away from the Hormuz entrance",
     "confidence": 98.4,
-    "type": "NAVIGATION",
+    "type": "Navigation",
     "status": "warning"
   },
   {
     "id": "SIG-1091",
     "timestamp": "14:28:02",
-    "source": "SCADA_TELEMETRY_NODE_4",
-    "signal": "Sub-station pressure stabilized at 1,420 PSI (Nominal)",
+    "source": "Pipeline Sensor 4",
+    "signal": "Sub-station pressure stable at 1,420 PSI (normal)",
     "confidence": 99.9,
-    "type": "GRID_HEALTH",
+    "type": "Grid Health",
     "status": "signal"
   },
   {
     "id": "SIG-1090",
     "timestamp": "14:26:15",
-    "source": "SENTINEL_SAR_RADAR",
-    "signal": "3 dark fleet vessels detected non-broadcasting AIS near Bab-el-Mandeb",
+    "source": "Satellite Radar",
+    "signal": "3 vessels detected near Bab-el-Mandeb with tracking signals off",
     "confidence": 89.1,
-    "type": "SECURITY",
+    "type": "Security",
     "status": "danger"
   },
   {
     "id": "SIG-1089",
     "timestamp": "14:20:11",
-    "source": "AGENT_GRIDGUARD",
-    "signal": "Automated rerouting recommendation dispatched to National Grid West",
+    "source": "Grid Monitoring Agent",
+    "signal": "Rerouting recommendation sent to National Grid West",
     "confidence": 96.5,
-    "type": "AI_ACTION",
+    "type": "AI Action",
     "status": "signal"
   }
 ]

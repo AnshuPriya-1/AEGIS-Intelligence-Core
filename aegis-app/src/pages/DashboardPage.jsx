@@ -8,13 +8,19 @@ import { ScenarioPanel } from '../components/organisms/ScenarioPanel';
 import { OilPricePanel } from '../components/organisms/OilPricePanel';
 import { AgentMonitor } from '../components/organisms/AgentMonitor';
 import { AdvancedAnalytics } from '../components/organisms/AdvancedAnalytics';
+import { ShapExplainability } from '../components/organisms/ShapExplainability';
+import { DecisionComparison } from '../components/organisms/DecisionComparison';
+import { TimeMachine } from '../components/organisms/TimeMachine';
 import { GlassPanel } from '../components/atoms/GlassPanel';
-import { Badge } from '../components/atoms/Badge';
 import { apiService } from '../services/apiService';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
-import { ShieldCheck, TrendingUp, Layers, Activity } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
-export function DashboardPage({ activeTab }) {
+// One continuous Command Center screen. Sidebar items jump to a section
+// (by id) instead of swapping in a separate page — so nothing on this
+// dashboard is ever shown twice, and the live demo never navigates away
+// from a single screen.
+export function DashboardPage() {
   const [riskData, setRiskData] = useState(null);
   const [chartsData, setChartsData] = useState(null);
 
@@ -23,100 +29,33 @@ export function DashboardPage({ activeTab }) {
     apiService.getCharts().then(setChartsData);
   }, []);
 
-  // Render different active subviews if selected from sidebar
-  if (activeTab === 'globe') {
-    return (
-      <div className="p-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold font-display text-[var(--text)]">
-            Global Energy Digital Twin (Full Screen View)
-          </h2>
-          <Badge variant="signal">3D REAL-TIME AIS</Badge>
-        </div>
-        <GlobePanel />
-      </div>
-    );
-  }
-
-  if (activeTab === 'risk') {
-    return (
-      <div className="p-4 space-y-4">
-        <h2 className="text-xl font-bold font-display text-[var(--text)]">
-          National Risk Intelligence Engine
-        </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {riskData && <RiskGauge riskData={riskData} />}
-          <AlertCenter />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeTab === 'agents') {
-    return (
-      <div className="p-4 space-y-4">
-        <h2 className="text-xl font-bold font-display text-[var(--text)]">
-          Autonomous AI Agent Fleet & SCADA Protectors
-        </h2>
-        <AgentMonitor />
-      </div>
-    );
-  }
-
-  if (activeTab === 'markets') {
-    return (
-      <div className="p-4 space-y-4">
-        <h2 className="text-xl font-bold font-display text-[var(--text)]">
-          Global Energy Commodities & Markets
-        </h2>
-        <OilPricePanel />
-      </div>
-    );
-  }
-
-  if (activeTab === 'analytics') {
-    return (
-      <div className="p-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold font-display text-[var(--text)]">
-            Advanced Analytics & Forecasting
-          </h2>
-          <Badge variant="signal">DEEP INTELLIGENCE</Badge>
-        </div>
-        <AdvancedAnalytics />
-      </div>
-    );
-  }
-
-  // Primary Integrated Command Center Dashboard View
   return (
-    <div className="p-4 space-y-4 max-w-[1920px] mx-auto">
-      {/* 1. Live KPI Strip */}
+    <div className="p-4 space-y-4 max-w-[1920px] mx-auto" id="dashboard">
+      {/* Live KPI Strip */}
       <KPIStrip />
 
-      {/* 2. Main Center Grid: 3D Digital Twin Globe + Risk Gauge */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      {/* Global map + current risk + scenario controls */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4" id="globe">
         <div className="lg:col-span-2">
           <GlobePanel />
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4" id="risk">
           {riskData && <RiskGauge riskData={riskData} />}
           <ScenarioPanel />
         </div>
       </div>
 
-      {/* 3. Middle Section: Risk Trend Chart + Oil Prices */}
+      {/* Risk trend over time + oil markets */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Risk Trend Chart */}
         <GlassPanel className="lg:col-span-2 flex flex-col justify-between">
           <div className="flex items-center justify-between border-b border-[var(--border)]/40 pb-3 mb-3">
             <div className="flex items-center space-x-2">
               <TrendingUp className="w-4 h-4 text-[var(--signal)]" />
               <h3 className="text-sm font-semibold font-display tracking-wide uppercase text-[var(--text)]">
-                6-Month Risk Trend & Geopolitical Vector
+                Risk Over Time
               </h3>
             </div>
-            <span className="text-[10px] font-mono text-[var(--muted)]">HISTORICAL TELEMETRY</span>
+            <span className="text-[10px] font-mono text-[var(--muted)]">LAST 6 MONTHS</span>
           </div>
 
           <div className="w-full h-64">
@@ -147,7 +86,7 @@ export function DashboardPage({ activeTab }) {
                   <Area
                     type="monotone"
                     dataKey="geopolitical"
-                    name="Geopolitical Threat"
+                    name="Geopolitical Risk"
                     stroke="var(--warning)"
                     fillOpacity={1}
                     fill="url(#colorGeo)"
@@ -155,7 +94,7 @@ export function DashboardPage({ activeTab }) {
                   <Area
                     type="monotone"
                     dataKey="overall"
-                    name="Overall Risk Score"
+                    name="Overall Risk"
                     stroke="var(--danger)"
                     fillOpacity={1}
                     fill="url(#colorRisk)"
@@ -166,15 +105,31 @@ export function DashboardPage({ activeTab }) {
           </div>
         </GlassPanel>
 
-        {/* Oil Prices & Markets */}
-        <OilPricePanel />
+        <div id="markets">
+          <OilPricePanel />
+        </div>
       </div>
 
-      {/* 4. Bottom Grid: Alert Center + Signal Feed + AI Agent Monitor */}
+      {/* Alerts, live signals, and AI agents */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <AlertCenter />
         <SignalFeed />
-        <AgentMonitor />
+        <div id="agents">
+          <AgentMonitor />
+        </div>
+      </div>
+
+      {/* Decision-support tools: why the score is what it is, what to do
+          about it, and how it's tracked over time */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <ShapExplainability />
+        <DecisionComparison />
+        <TimeMachine />
+      </div>
+
+      {/* Longer-range analytics and forecasting */}
+      <div id="analytics">
+        <AdvancedAnalytics />
       </div>
     </div>
   );

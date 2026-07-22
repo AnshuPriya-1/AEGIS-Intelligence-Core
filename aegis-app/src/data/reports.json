@@ -2,7 +2,7 @@
   {
     "id": "REP-2026-071",
     "title": "National Energy Resilience Threat Assessment Q3",
-    "classification": "TOP SECRET // NOFORN",
+    "classification": "Internal",
     "date": "2026-07-21",
     "author": "AEGIS Autonomous Intelligence Engine",
     "pages": 18,
@@ -12,7 +12,7 @@
   {
     "id": "REP-2026-069",
     "title": "Strait of Hormuz 30-Day Contingency Playbook",
-    "classification": "SECRET // REL TO NATO",
+    "classification": "Internal",
     "date": "2026-07-19",
     "author": "StrategicAnalyst AI",
     "pages": 12,
@@ -22,7 +22,7 @@
   {
     "id": "REP-2026-065",
     "title": "SCADA Cyber Defensive Readiness Audit",
-    "classification": "CONFIDENTIAL",
+    "classification": "Internal",
     "date": "2026-07-15",
     "author": "GridGuard AI",
     "pages": 24,

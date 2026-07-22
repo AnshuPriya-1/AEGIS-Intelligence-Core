@@ -139,8 +139,8 @@ export function Header() {
             VS
           </div>
           <div className="hidden xl:block text-left">
-            <div className="text-xs font-semibold text-[var(--text)]">Cmdr. Sterling</div>
-            <div className="text-[10px] text-[var(--muted)] font-mono">LEVEL 5 TOP SECRET</div>
+            <div className="text-xs font-semibold text-[var(--text)]">V. Sterling</div>
+            <div className="text-[10px] text-[var(--muted)] font-mono">Operations Lead</div>
           </div>
         </div>
       </div>

@@ -13,14 +13,14 @@ export function ShapExplainability() {
         <div className="flex items-center space-x-2">
           <Cpu className="w-4 h-4 text-[var(--signal)]" />
           <h3 className="text-sm font-semibold font-display tracking-wide uppercase text-[var(--text)]">
-            SHAP AI Model Feature Attribution
+            Why the Risk Score Changed
           </h3>
         </div>
-        <Badge variant="signal">SHAPLEY MATRIX</Badge>
+        <Badge variant="signal">Explainable AI</Badge>
       </div>
 
       <div className="text-xs text-[var(--muted)] mb-3 font-mono">
-        Base Risk: <span className="text-[var(--text)] font-bold">{shapData.baseRiskScore}%</span> → Predicted Risk: <span className="text-[var(--danger)] font-bold">{shapData.predictedRiskScore}%</span>
+        Starting point: <span className="text-[var(--text)] font-bold">{shapData.baseRiskScore}%</span> → Current score: <span className="text-[var(--danger)] font-bold">{shapData.predictedRiskScore}%</span>
       </div>
 
       {/* Feature Contribution Bars */}
@@ -74,13 +74,15 @@ export function ShapExplainability() {
           onClick={() => setExpanded(!expanded)}
           className="w-full flex items-center justify-between text-xs text-[var(--signal)] font-mono hover:underline"
         >
-          <span>{expanded ? 'Hide SHAP Math Rationale' : 'View SHAP Math Rationale'}</span>
+          <span>{expanded ? 'Hide how this is calculated' : 'How is this calculated?'}</span>
           {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
         </button>
 
         {expanded && (
           <div className="mt-2 p-2.5 rounded bg-[var(--bg)] border border-[var(--border)] text-[11px] text-[var(--muted)] font-mono leading-relaxed">
-            Attribution scores calculated using 10,000 Monte Carlo game-theoretic permutations across satellite SAR telemetry and pipeline pressure sensors.
+            Each bar shows how much that factor pushed the score up or down, using SHAP
+            (SHapley Additive exPlanations) — a standard, widely-used method for explaining
+            what a model based its prediction on.
           </div>
         )}
       </div>

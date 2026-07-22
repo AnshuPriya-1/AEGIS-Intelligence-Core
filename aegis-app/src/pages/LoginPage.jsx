@@ -40,10 +40,10 @@ export function LoginPage({ onLoginSuccess, onBypass }) {
             <ShieldCheck className="w-8 h-8 text-[#0A0E14]" />
           </div>
           <h2 className="text-2xl font-extrabold font-display tracking-wider text-[var(--text)]">
-            Clearance Portal
+            Sign In
           </h2>
           <p className="text-xs text-[var(--muted)] font-mono">
-            National Energy Governance Authentication
+            AEGIS Command Center Access
           </p>
         </div>
 
@@ -83,15 +83,15 @@ export function LoginPage({ onLoginSuccess, onBypass }) {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-mono text-[var(--muted)] uppercase">Security Clearance Level</label>
+            <label className="text-xs font-mono text-[var(--muted)] uppercase">Role</label>
             <select
               value={clearance}
               onChange={(e) => setClearance(e.target.value)}
               className="w-full px-3 py-2 bg-[var(--bg)] border border-[var(--border)] rounded-lg text-sm text-[var(--text)] focus:border-[var(--signal)] focus:outline-none font-mono"
             >
-              <option value="Level 5">Level 5 — Top Secret / Command</option>
-              <option value="Level 4">Level 4 — Strategic Analyst</option>
-              <option value="Level 3">Level 3 — SCADA Auditor</option>
+              <option value="Level 5">Operations Lead</option>
+              <option value="Level 4">Strategic Analyst</option>
+              <option value="Level 3">Pipeline Auditor</option>
             </select>
           </div>
 
@@ -103,7 +103,7 @@ export function LoginPage({ onLoginSuccess, onBypass }) {
             icon={ArrowRight}
             className="w-full py-3 text-sm font-bold uppercase tracking-wider mt-2"
           >
-            {loading ? 'Authenticating...' : 'Authenticate Clearance'}
+            {loading ? 'Signing in...' : 'Sign In'}
           </Button>
         </form>
 

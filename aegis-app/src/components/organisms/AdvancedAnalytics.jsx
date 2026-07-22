@@ -202,7 +202,7 @@ export function AdvancedAnalytics() {
 
       {/* Risk heatmap */}
       <GlassPanel>
-        <SectionHeader icon={Flame} title="Chokepoint Risk Heatmap (5-Week Trend)" badge="THERMAL MATRIX" />
+        <SectionHeader icon={Flame} title="Chokepoint Risk Heatmap (5-Week Trend)" badge="HEATMAP" />
         <div className="overflow-x-auto">
           <table className="w-full text-[10px] font-mono">
             <thead>

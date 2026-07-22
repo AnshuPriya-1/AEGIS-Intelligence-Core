@@ -1,5 +1,5 @@
 {
-  "summary": "SHAP (SHapley Additive exPlanations) model feature contribution breakdown for current Global Risk Score (41.8 / 100).",
+  "summary": "How each factor is pushing the current risk score of 41.8/100 up or down.",
   "baseRiskScore": 25.0,
   "predictedRiskScore": 41.8,
   "features": [
@@ -9,7 +9,7 @@
       "contribution": 12.4,
       "type": "positive",
       "importance": 1,
-      "description": "Satellite SAR radar confirmed non-commercial naval presence within maritime corridor Alpha."
+      "description": "Satellite radar confirmed unusual naval activity near the strait."
     },
     {
       "name": "Red Sea Divergence Transit Lag",

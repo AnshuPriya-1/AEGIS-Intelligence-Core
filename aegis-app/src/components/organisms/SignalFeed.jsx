@@ -11,10 +11,10 @@ export function SignalFeed() {
         <div className="flex items-center space-x-2">
           <Radio className="w-4 h-4 text-[var(--signal)] animate-pulse" />
           <h3 className="text-sm font-semibold font-display tracking-wide uppercase text-[var(--text)]">
-            Live Telemetry Signal Stream
+            Live Signals
           </h3>
         </div>
-        <span className="text-[10px] font-mono text-[var(--signal)]">AUTO_REFRESH 1s</span>
+        <span className="text-[10px] font-mono text-[var(--signal)]">Updates every second</span>
       </div>
 
       <div className="space-y-2.5 overflow-y-auto max-h-[360px] pr-1">
