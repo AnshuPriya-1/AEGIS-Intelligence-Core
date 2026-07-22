@@ -12,6 +12,18 @@ export function AppProvider({ children }) {
   const [notificationDrawerOpen, setNotificationDrawerOpen] = useState(false);
   const [aiMemoryOpen, setAiMemoryOpen] = useState(false);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  // Location the globe should fly to / highlight, set by search or clicking a marker.
+  // Shape: { id, label, lat, lng, kind: 'country' | 'port', meta } | null
+  const [focusTarget, setFocusTargetState] = useState(null);
+  const [focusRequestId, setFocusRequestId] = useState(0);
+
+  // Always bump focusRequestId so the globe re-flies even if the same target is picked twice
+  const setFocusTarget = (target) => {
+    setFocusTargetState(target);
+    setFocusRequestId((id) => id + 1);
+  };
 
   // Globe Layers State
   const [globeLayers, setGlobeLayers] = useState({
@@ -50,8 +62,13 @@ export function AppProvider({ children }) {
         setAiMemoryOpen,
         globalSearchOpen,
         setGlobalSearchOpen,
+        settingsOpen,
+        setSettingsOpen,
         globeLayers,
         toggleGlobeLayer,
+        focusTarget,
+        focusRequestId,
+        setFocusTarget,
       }}
     >
       {children}

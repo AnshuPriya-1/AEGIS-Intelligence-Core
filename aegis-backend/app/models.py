@@ -5,6 +5,18 @@ from sqlalchemy.sql import func
 from app.database import Base
 
 
+class User(Base):
+    __tablename__ = "users"
+    id = Column(BigInteger, primary_key=True)
+    email = Column(Text, nullable=False, unique=True, index=True)
+    hashed_password = Column(Text, nullable=False)
+    name = Column(Text, nullable=False)
+    role = Column(Text, nullable=False, default="Strategic Analyst")
+    department = Column(Text, nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
+
+
 class RiskScore(Base):
     __tablename__ = "risk_scores"
     id = Column(BigInteger, primary_key=True)

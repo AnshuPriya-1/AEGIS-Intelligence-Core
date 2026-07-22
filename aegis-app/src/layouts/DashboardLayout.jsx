@@ -7,6 +7,7 @@ import { NotificationDrawer } from '../components/organisms/NotificationDrawer';
 import { AiMemoryPanel } from '../components/organisms/AiMemoryPanel';
 import { GlobalSearchModal } from '../components/organisms/GlobalSearchModal';
 import { CrisisSimulationOverlay } from '../components/organisms/CrisisSimulationOverlay';
+import { SystemSettingsModal } from '../components/organisms/SystemSettingsModal';
 
 export function DashboardLayout({ children, activeTab, setActiveTab }) {
   return (
@@ -26,6 +27,7 @@ export function DashboardLayout({ children, activeTab, setActiveTab }) {
       <AiMemoryPanel />
       <GlobalSearchModal />
       <CrisisSimulationOverlay />
+      <SystemSettingsModal />
     </div>
   );
 }

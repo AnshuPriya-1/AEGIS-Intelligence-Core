@@ -2,6 +2,21 @@
 -- Run this in the Supabase SQL editor, or via `psql $DATABASE_URL -f sql/schema.sql`
 
 -- ============================================================
+-- 3.6.0  users — real authentication (signup / login)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS users (
+    id              BIGSERIAL PRIMARY KEY,
+    email           TEXT NOT NULL UNIQUE,
+    hashed_password TEXT NOT NULL,
+    name            TEXT NOT NULL,
+    role            TEXT NOT NULL DEFAULT 'Strategic Analyst',
+    department      TEXT,
+    is_active       BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
+
+-- ============================================================
 -- 3.6.1  risk_scores — every computed Disruption Risk Score
 -- ============================================================
 CREATE TABLE IF NOT EXISTS risk_scores (

@@ -37,7 +37,18 @@ async function fetchJson(path, options = {}, timeoutMs = 6000) {
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(`${API_BASE}${path}`, { ...options, signal: controller.signal });
-    if (!res.ok) throw new Error(`${path} responded ${res.status}`);
+    if (!res.ok) {
+      let detail = `${path} responded ${res.status}`;
+      try {
+        const body = await res.json();
+        if (body?.detail) detail = typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail);
+      } catch {
+        // response wasn't JSON — keep the generic message
+      }
+      const err = new Error(detail);
+      err.status = res.status;
+      throw err;
+    }
     return await res.json();
   } finally {
     clearTimeout(timer);
@@ -153,4 +164,49 @@ export const apiService = {
   },
 
   isLiveModeAvailable: !USE_MOCK,
+
+  // ---- Auth (real backend only — there's nothing to "mock" about an account) ----
+  async signup({ name, email, password, role, department }) {
+    const data = await fetchJson('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, role, department }),
+    });
+    localStorage.setItem('aegis_token', data.access_token);
+    localStorage.setItem('aegis_user', JSON.stringify(data.user));
+    return data;
+  },
+
+  async login({ email, password }) {
+    const data = await fetchJson('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    localStorage.setItem('aegis_token', data.access_token);
+    localStorage.setItem('aegis_user', JSON.stringify(data.user));
+    return data;
+  },
+
+  async fetchMe() {
+    const token = localStorage.getItem('aegis_token');
+    if (!token) throw new Error('Not authenticated');
+    return fetchJson('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+
+  logout() {
+    localStorage.removeItem('aegis_token');
+    localStorage.removeItem('aegis_user');
+  },
+
+  getStoredUser() {
+    const raw = localStorage.getItem('aegis_user');
+    return raw ? JSON.parse(raw) : null;
+  },
+
+  isAuthenticated() {
+    return !!localStorage.getItem('aegis_token');
+  },
 };

@@ -5,7 +5,9 @@
     "riskScore": 22,
     "status": "signal",
     "production": "13.2M bpd",
-    "reserves": "114 Days"
+    "reserves": "114 Days",
+    "lat": 38.9,
+    "lng": -77.0
   },
   {
     "code": "SAU",
@@ -13,7 +15,9 @@
     "riskScore": 64,
     "status": "warning",
     "production": "9.1M bpd",
-    "reserves": "90 Days"
+    "reserves": "90 Days",
+    "lat": 24.63,
+    "lng": 46.72
   },
   {
     "code": "ARE",
@@ -21,7 +25,9 @@
     "riskScore": 42,
     "status": "warning",
     "production": "3.2M bpd",
-    "reserves": "75 Days"
+    "reserves": "75 Days",
+    "lat": 24.45,
+    "lng": 54.38
   },
   {
     "code": "SGP",
@@ -29,7 +35,9 @@
     "riskScore": 38,
     "status": "signal",
     "production": "0.0M bpd (Refinery Hub)",
-    "reserves": "60 Days"
+    "reserves": "60 Days",
+    "lat": 1.35,
+    "lng": 103.82
   },
   {
     "code": "JPN",
@@ -37,7 +45,9 @@
     "riskScore": 58,
     "status": "warning",
     "production": "0.0M bpd",
-    "reserves": "140 Days"
+    "reserves": "140 Days",
+    "lat": 35.68,
+    "lng": 139.69
   },
   {
     "code": "DEU",
@@ -45,6 +55,8 @@
     "riskScore": 49,
     "status": "warning",
     "production": "0.1M bpd",
-    "reserves": "90 Days"
+    "reserves": "90 Days",
+    "lat": 52.52,
+    "lng": 13.4
   }
 ]

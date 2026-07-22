@@ -4,7 +4,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from app.config import get_settings
 from app.database import Base, engine, SessionLocal
-from app.routers import data, simulate
+from app.routers import data, simulate, auth
 from app.services.data_pipeline import run_full_pipeline
 from app.websocket_manager import manager
 
@@ -22,6 +22,7 @@ app.add_middleware(
 
 app.include_router(data.router)
 app.include_router(simulate.router)
+app.include_router(auth.router)
 
 scheduler = AsyncIOScheduler()
 

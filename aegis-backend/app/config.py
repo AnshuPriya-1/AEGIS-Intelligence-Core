@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173"
     risk_model_path: str = "ml/artifacts/risk_model.joblib"
 
+    jwt_secret_key: str = "dev-only-insecure-secret-change-me"
+    jwt_algorithm: str = "HS256"
+    jwt_expire_minutes: int = 60 * 24 * 7  # 7 days
+
     class Config:
         env_file = ".env"
 

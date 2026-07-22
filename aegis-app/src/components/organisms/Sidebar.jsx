@@ -27,6 +27,7 @@ export function Sidebar({ activeTab, setActiveTab }) {
     setAiMemoryOpen,
     setGlobalSearchOpen,
     setReportModalOpen,
+    setSettingsOpen,
   } = useApp();
 
   // Everything lives on one page now — these jump to a section instead of
@@ -132,7 +133,7 @@ export function Sidebar({ activeTab, setActiveTab }) {
       <div className="space-y-2 pt-4 border-t border-[var(--border)]/40">
         <DemoModeToggle collapsed={sidebarCollapsed} />
         <button
-          onClick={() => setActiveTab('settings')}
+          onClick={() => setSettingsOpen(true)}
           className={`w-full flex items-center ${
             sidebarCollapsed ? 'justify-center px-2' : 'px-3'
           } py-2 rounded-lg text-xs text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--border)]/30`}

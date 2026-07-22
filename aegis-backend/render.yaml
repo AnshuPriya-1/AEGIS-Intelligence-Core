@@ -27,6 +27,12 @@ services:
         value: https://your-vercel-app.vercel.app
       - key: RISK_MODEL_PATH
         value: ml/artifacts/risk_model.joblib
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_EXPIRE_MINUTES
+        value: "10080"
 
   - type: redis
     name: aegis-redis

@@ -21,7 +21,7 @@ const CATEGORY_META = {
 };
 
 export function GlobalSearchModal() {
-  const { globalSearchOpen, setGlobalSearchOpen, setActiveTab, setAiMemoryOpen, setReportModalOpen } = useApp();
+  const { globalSearchOpen, setGlobalSearchOpen, setActiveTab, setAiMemoryOpen, setReportModalOpen, setFocusTarget } = useApp();
   const { memoryLog } = useSimulation();
   const [query, setQuery] = useState('');
 
@@ -43,11 +43,29 @@ export function GlobalSearchModal() {
 
     const countries = countriesData
       .filter((c) => c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q))
-      .map((c) => ({ id: c.code, label: c.name, sub: `Risk ${c.riskScore} · ${c.production}`, status: c.status }));
+      .map((c) => ({
+        id: c.code,
+        label: c.name,
+        sub: `Risk ${c.riskScore} · ${c.production}`,
+        status: c.status,
+        lat: c.lat,
+        lng: c.lng,
+        kind: 'country',
+        meta: c,
+      }));
 
     const ports = portsData
       .filter((p) => p.name.toLowerCase().includes(q) || p.country.toLowerCase().includes(q))
-      .map((p) => ({ id: p.id, label: p.name, sub: `${p.country} · ${p.throughput}`, status: p.riskLevel }));
+      .map((p) => ({
+        id: p.id,
+        label: p.name,
+        sub: `${p.country} · ${p.throughput}`,
+        status: p.riskLevel,
+        lat: p.lat,
+        lng: p.lng,
+        kind: 'port',
+        meta: p,
+      }));
 
     const reports = reportsData
       .filter((r) => r.title.toLowerCase().includes(q))
@@ -70,10 +88,21 @@ export function GlobalSearchModal() {
 
   const totalResults = Object.values(results).reduce((sum, arr) => sum + (arr?.length || 0), 0);
 
-  const handleSelect = (category) => {
+  const handleSelect = (category, item) => {
     setGlobalSearchOpen(false);
-    if (category === 'Countries' || category === 'Ports') setActiveTab('globe');
-    else if (category === 'Reports') setReportModalOpen(true);
+    if (category === 'Countries' || category === 'Ports') {
+      setActiveTab('globe');
+      if (item?.lat != null && item?.lng != null) {
+        setFocusTarget({
+          id: item.id,
+          label: item.label,
+          lat: item.lat,
+          lng: item.lng,
+          kind: item.kind,
+          meta: item.meta,
+        });
+      }
+    } else if (category === 'Reports') setReportModalOpen(true);
     else if (category === 'Scenarios') setAiMemoryOpen(true);
     else if (category === 'Signals' || category === 'Events') setActiveTab('risk');
   };
@@ -144,7 +173,7 @@ export function GlobalSearchModal() {
                         {items.slice(0, 5).map((item) => (
                           <button
                             key={item.id}
-                            onClick={() => handleSelect(category)}
+                            onClick={() => handleSelect(category, item)}
                             className="w-full flex items-center justify-between p-2.5 rounded-lg text-xs hover:bg-[var(--signal)]/10 text-left transition-colors group"
                           >
                             <div className="min-w-0">

@@ -80,4 +80,4 @@ In the interest of transparency:
 
 ## Why This Project
 
-Before writing a line of this platform, I spent time inside Indian Oil Corporation Limited's Instrumentation department during a vocational training placement — watching, firsthand, how sensor data, control systems, and human judgment intersect on a live industrial floor. That's the exact gap this brief names: *"data present, but unacted upon."* AEGIS exists to close the space between the moment a sensor already knows and the moment someone acts on it in time.
+Before writing a line of this platform, I spent time inside Indian Oil Corporation Limited's Instrumentation department during a vocational training — watching, firsthand, how sensor data, control systems, and human judgment intersect on a live industrial floor. That's the exact gap this brief names: *"data present, but unacted upon."* AEGIS exists to close the space between the moment a sensor already knows and the moment someone acts on it in time.
