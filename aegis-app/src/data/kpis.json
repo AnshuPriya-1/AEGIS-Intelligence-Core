@@ -1,0 +1,47 @@
+{
+  "nationalReserveLevel": {
+    "value": 84.6,
+    "unit": "%",
+    "change": "+1.2%",
+    "trend": "up",
+    "status": "signal",
+    "target": "85.0%",
+    "history": [82.1, 82.5, 83.0, 83.8, 84.1, 84.6]
+  },
+  "gridStabilityScore": {
+    "value": 98.4,
+    "unit": "/100",
+    "change": "OPTIMAL",
+    "trend": "neutral",
+    "status": "signal",
+    "target": "99.0",
+    "history": [97.9, 98.1, 98.0, 98.2, 98.3, 98.4]
+  },
+  "importRiskIndex": {
+    "value": 34.2,
+    "unit": "RISK",
+    "change": "-4.8%",
+    "trend": "down",
+    "status": "warning",
+    "target": "<30.0",
+    "history": [45.2, 42.1, 39.0, 37.5, 36.1, 34.2]
+  },
+  "activeChokepointThreats": {
+    "value": 3,
+    "unit": "ZONES",
+    "change": "+1 ALERT",
+    "trend": "up",
+    "status": "danger",
+    "target": "0 ZONES",
+    "history": [1, 1, 2, 2, 2, 3]
+  },
+  "sprDaysRemaining": {
+    "value": 114,
+    "unit": "DAYS",
+    "change": "SECURE",
+    "trend": "up",
+    "status": "signal",
+    "target": ">90 DAYS",
+    "history": [108, 110, 111, 112, 113, 114]
+  }
+}

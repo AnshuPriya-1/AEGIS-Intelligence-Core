@@ -1,0 +1,42 @@
+[
+  {
+    "symbol": "BRENT",
+    "name": "Brent Crude",
+    "price": 84.12,
+    "change": "+1.85",
+    "pctChange": "+2.25%",
+    "trend": "up",
+    "status": "warning",
+    "sparkline": [81.2, 82.0, 81.8, 83.1, 82.9, 84.12]
+  },
+  {
+    "symbol": "WTI",
+    "name": "WTI Crude",
+    "price": 79.45,
+    "change": "+1.40",
+    "pctChange": "+1.79%",
+    "trend": "up",
+    "status": "warning",
+    "sparkline": [77.1, 77.8, 78.0, 78.5, 78.9, 79.45]
+  },
+  {
+    "symbol": "LNG-EU",
+    "name": "Dutch TTF Natural Gas",
+    "price": 34.80,
+    "change": "-0.65",
+    "pctChange": "-1.83%",
+    "trend": "down",
+    "status": "signal",
+    "sparkline": [36.2, 35.9, 35.5, 35.1, 35.0, 34.80]
+  },
+  {
+    "symbol": "URALS",
+    "name": "Urals Blend",
+    "price": 68.20,
+    "change": "+0.45",
+    "pctChange": "+0.66%",
+    "trend": "neutral",
+    "status": "signal",
+    "sparkline": [67.5, 67.8, 67.9, 68.0, 68.1, 68.20]
+  }
+]

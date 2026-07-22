@@ -1,0 +1,67 @@
+[
+  {
+    "id": "route-1",
+    "name": "Persian Gulf to East Asia",
+    "startLat": 26.5667,
+    "startLng": 56.25,
+    "endLat": 35.6762,
+    "endLng": 139.6503,
+    "color": "#FF4757",
+    "stroke": 2.5,
+    "status": "danger",
+    "flowRate": "14.2M bpd",
+    "vessels": 48
+  },
+  {
+    "id": "route-2",
+    "name": "Persian Gulf to Western Europe",
+    "startLat": 26.5667,
+    "startLng": 56.25,
+    "endLat": 51.95,
+    "endLng": 4.14,
+    "color": "#FFB800",
+    "stroke": 2.0,
+    "status": "warning",
+    "flowRate": "4.8M bpd",
+    "vessels": 22
+  },
+  {
+    "id": "route-3",
+    "name": "US Gulf Coast to Western Europe",
+    "startLat": 29.95,
+    "startLng": -90.07,
+    "endLat": 51.95,
+    "endLng": 4.14,
+    "color": "#00D9C0",
+    "stroke": 2.0,
+    "status": "signal",
+    "flowRate": "3.5M bpd",
+    "vessels": 31
+  },
+  {
+    "id": "route-4",
+    "name": "Australia LNG to Japan",
+    "startLat": -20.6,
+    "startLng": 116.7,
+    "endLat": 35.67,
+    "endLng": 139.65,
+    "color": "#00D9C0",
+    "stroke": 1.8,
+    "status": "signal",
+    "flowRate": "2.8M bpd eq",
+    "vessels": 19
+  },
+  {
+    "id": "route-5",
+    "name": "West Africa to North America",
+    "startLat": 4.5,
+    "startLng": 6.8,
+    "endLat": 35.98,
+    "endLng": -96.76,
+    "color": "#FFB800",
+    "stroke": 1.5,
+    "status": "warning",
+    "flowRate": "1.9M bpd",
+    "vessels": 14
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "code": "USA",
+    "name": "United States",
+    "riskScore": 22,
+    "status": "signal",
+    "production": "13.2M bpd",
+    "reserves": "114 Days"
+  },
+  {
+    "code": "SAU",
+    "name": "Saudi Arabia",
+    "riskScore": 64,
+    "status": "warning",
+    "production": "9.1M bpd",
+    "reserves": "90 Days"
+  },
+  {
+    "code": "ARE",
+    "name": "United Arab Emirates",
+    "riskScore": 42,
+    "status": "warning",
+    "production": "3.2M bpd",
+    "reserves": "75 Days"
+  },
+  {
+    "code": "SGP",
+    "name": "Singapore",
+    "riskScore": 38,
+    "status": "signal",
+    "production": "0.0M bpd (Refinery Hub)",
+    "reserves": "60 Days"
+  },
+  {
+    "code": "JPN",
+    "name": "Japan",
+    "riskScore": 58,
+    "status": "warning",
+    "production": "0.0M bpd",
+    "reserves": "140 Days"
+  },
+  {
+    "code": "DEU",
+    "name": "Germany",
+    "riskScore": 49,
+    "status": "warning",
+    "production": "0.1M bpd",
+    "reserves": "90 Days"
+  }
+]

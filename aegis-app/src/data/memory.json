@@ -1,0 +1,11 @@
+{
+  "systemMemory": {
+    "totalVectorEmbeddings": 1420000,
+    "lastKnowledgeGraphSync": "2026-07-21 14:00 UTC",
+    "activeHeuristics": [
+      "Hormuz blockage -> +$18/bbl Brent impact within 48h",
+      "Malacca delay -> +4 days East Asia refinery inventory lag",
+      "Cyber SCADA ping > 500ms -> Trigger automated isolation protocol"
+    ]
+  }
+}

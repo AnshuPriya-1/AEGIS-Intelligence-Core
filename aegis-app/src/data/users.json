@@ -1,0 +1,11 @@
+{
+  "currentUser": {
+    "id": "USR-001",
+    "name": "Cmdr. Vance Sterling",
+    "title": "Director of Energy Governance",
+    "clearance": "LEVEL 5 TOP SECRET",
+    "avatar": "VS",
+    "department": "National Energy Intelligence Command",
+    "email": "vance.sterling@aegis.gov"
+  }
+}

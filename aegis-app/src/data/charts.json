@@ -1,0 +1,27 @@
+{
+  "riskTrends": [
+    { "month": "Jan", "overall": 28, "geopolitical": 34, "cyber": 18, "supply": 22 },
+    { "month": "Feb", "overall": 31, "geopolitical": 38, "cyber": 20, "supply": 24 },
+    { "month": "Mar", "overall": 29, "geopolitical": 35, "cyber": 19, "supply": 21 },
+    { "month": "Apr", "overall": 35, "geopolitical": 45, "cyber": 22, "supply": 28 },
+    { "month": "May", "overall": 39, "geopolitical": 58, "cyber": 21, "supply": 30 },
+    { "month": "Jun", "overall": 44, "geopolitical": 65, "cyber": 25, "supply": 34 },
+    { "month": "Jul", "overall": 41.8, "geopolitical": 68.4, "cyber": 24.5, "supply": 18.2 }
+  ],
+  "energyImportsByRegion": [
+    { "name": "Middle East", "value": 42, "color": "#FFB800" },
+    { "name": "North America", "value": 28, "color": "#00D9C0" },
+    { "name": "West Africa", "value": 14, "color": "#8B95A5" },
+    { "name": "Latin America", "value": 10, "color": "#202834" },
+    { "name": "Asia Pacific", "value": 6, "color": "#FF4757" }
+  ],
+  "sprDrawdownScenarios": [
+    { "day": 1, "baseline": 114, "hormuzBlockade": 114, "cyberOutage": 114 },
+    { "day": 5, "baseline": 114, "hormuzBlockade": 110, "cyberOutage": 112 },
+    { "day": 10, "baseline": 114, "hormuzBlockade": 102, "cyberOutage": 109 },
+    { "day": 15, "baseline": 113, "hormuzBlockade": 92, "cyberOutage": 106 },
+    { "day": 20, "baseline": 113, "hormuzBlockade": 81, "cyberOutage": 102 },
+    { "day": 25, "baseline": 112, "hormuzBlockade": 69, "cyberOutage": 98 },
+    { "day": 30, "baseline": 112, "hormuzBlockade": 58, "cyberOutage": 95 }
+  ]
+}

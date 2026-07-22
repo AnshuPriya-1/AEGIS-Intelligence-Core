@@ -1,0 +1,86 @@
+[
+  {
+    "id": "port-hormuz",
+    "name": "Strait of Hormuz",
+    "country": "Oman / Iran",
+    "lat": 26.5667,
+    "lng": 56.25,
+    "throughput": "21.0 M bpd",
+    "riskLevel": "danger",
+    "riskScore": 78,
+    "status": "ELEVATED_THREAT",
+    "description": "Crucial oil transit chokepoint handling ~20% of global petroleum petroleum supply."
+  },
+  {
+    "id": "port-malacca",
+    "name": "Strait of Malacca",
+    "country": "Singapore / Malaysia",
+    "lat": 1.43,
+    "lng": 103.2,
+    "throughput": "16.0 M bpd",
+    "riskLevel": "warning",
+    "riskScore": 45,
+    "status": "WEATHER_ALERT",
+    "description": "Main sea route connecting Indian Ocean to South China Sea."
+  },
+  {
+    "id": "port-suez",
+    "name": "Suez Canal / SUMED",
+    "country": "Egypt",
+    "lat": 29.93,
+    "lng": 32.55,
+    "throughput": "5.5 M bpd",
+    "riskLevel": "warning",
+    "riskScore": 52,
+    "status": "MODERATE_CONGESTION",
+    "description": "Shortest maritime route between Europe and Indian Ocean."
+  },
+  {
+    "id": "port-cushing",
+    "name": "Cushing Terminal",
+    "country": "USA",
+    "lat": 35.98,
+    "lng": -96.76,
+    "throughput": "90 M bbl Capacity",
+    "riskLevel": "signal",
+    "riskScore": 12,
+    "status": "SECURE",
+    "description": "Primary delivery point for WTI crude futures."
+  },
+  {
+    "id": "port-rotterdam",
+    "name": "Port of Rotterdam",
+    "country": "Netherlands",
+    "lat": 51.95,
+    "lng": 4.14,
+    "throughput": "8.2 M bpd",
+    "riskLevel": "signal",
+    "riskScore": 18,
+    "status": "OPERATIONAL",
+    "description": "Europe's largest energy refining and distribution hub."
+  },
+  {
+    "id": "port-ras-tanura",
+    "name": "Ras Tanura Terminal",
+    "country": "Saudi Arabia",
+    "lat": 26.64,
+    "lng": 50.16,
+    "throughput": "6.5 M bpd",
+    "riskLevel": "danger",
+    "riskScore": 71,
+    "status": "HIGH_ALERT",
+    "description": "World's largest offshore oil loading facility."
+  },
+  {
+    "id": "port-fujairah",
+    "name": "Port of Fujairah",
+    "country": "UAE",
+    "lat": 25.18,
+    "lng": 56.36,
+    "throughput": "4.0 M bpd",
+    "riskLevel": "warning",
+    "riskScore": 48,
+    "status": "ACTIVE_MONITORING",
+    "description": "Major bunkering hub outside Strait of Hormuz."
+  }
+]

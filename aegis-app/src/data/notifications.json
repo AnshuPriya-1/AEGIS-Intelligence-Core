@@ -1,0 +1,34 @@
+[
+  {
+    "id": "NTF-1",
+    "title": "Threat Escalation in Hormuz",
+    "body": "GeoRisk-X flagged 14 non-commercial vessels moving to Block Alpha.",
+    "time": "5m ago",
+    "unread": true,
+    "severity": "danger"
+  },
+  {
+    "id": "NTF-2",
+    "title": "SPR Injection Verification",
+    "body": "4.2M Barrels verified in Cushing Cavern 3.",
+    "time": "32m ago",
+    "unread": true,
+    "severity": "signal"
+  },
+  {
+    "id": "NTF-3",
+    "title": "Grid Stability Optimum",
+    "body": "Frequency locked at 60.00 Hz across all 4 interconnectors.",
+    "time": "1h ago",
+    "unread": false,
+    "severity": "signal"
+  },
+  {
+    "id": "NTF-4",
+    "title": "Malacca Typhoon Warning",
+    "body": "22 vessels executing defensive storm drift pattern.",
+    "time": "2h ago",
+    "unread": false,
+    "severity": "warning"
+  }
+]

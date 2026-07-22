@@ -1,0 +1,42 @@
+[
+  {
+    "id": "agent-gridguard",
+    "name": "GridGuard AI",
+    "role": "Grid Stability & SCADA Cyber Protection",
+    "status": "ONLINE",
+    "activity": "Monitoring 1,420 substations for frequency deviations",
+    "confidence": 99.4,
+    "lastAction": "Prevented surge cascade on Regional Grid West",
+    "statusColor": "signal"
+  },
+  {
+    "id": "agent-supplypulse",
+    "name": "SupplyPulse AI",
+    "role": "Global Maritime Logistics & AIS Tracking",
+    "status": "ACTIVE_ANALYSIS",
+    "activity": "Tracking 314 crude & LNG tankers across 6 global chokepoints",
+    "confidence": 96.8,
+    "lastAction": "Rerouted 4 LNG carriers around Malacca storm front",
+    "statusColor": "warning"
+  },
+  {
+    "id": "agent-georisk",
+    "name": "GeoRisk-X",
+    "role": "Geopolitical Threat Forecasting",
+    "status": "ELEVATED_ALERT",
+    "activity": "Evaluating satellite SAR data in Strait of Hormuz",
+    "confidence": 91.2,
+    "lastAction": "Dispatched Threat Alert ALT-9041 to Command Center",
+    "statusColor": "danger"
+  },
+  {
+    "id": "agent-strategist",
+    "name": "StrategicAnalyst",
+    "role": "SPR Allocation & Fuel Emergency Policy",
+    "status": "STANDBY",
+    "activity": "Simulating 30-day supply deficit mitigation scenarios",
+    "confidence": 98.1,
+    "lastAction": "Generated Executive SPR Release Advisory Doc-88",
+    "statusColor": "signal"
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "EVT-882",
+    "time": "14:15",
+    "type": "GEOPOLITICAL",
+    "title": "Diplomatic Summit Announced regarding Red Sea Transit",
+    "severity": "warning",
+    "confidence": 92
+  },
+  {
+    "id": "EVT-881",
+    "time": "13:30",
+    "type": "INFRASTRUCTURE",
+    "title": "Subsea Power Interconnector 2 Telemetry Restored",
+    "severity": "signal",
+    "confidence": 99
+  },
+  {
+    "id": "EVT-880",
+    "time": "12:05",
+    "type": "MARKET",
+    "title": "Brent Futures Surge +2.4% following Middle East Shipping Reports",
+    "severity": "danger",
+    "confidence": 96
+  },
+  {
+    "id": "EVT-879",
+    "time": "10:45",
+    "type": "CYBER INTELLIGENCE",
+    "title": "Zero-day vulnerability patched across 14 Regional Load Dispatch Centers",
+    "severity": "signal",
+    "confidence": 100
+  }
+]

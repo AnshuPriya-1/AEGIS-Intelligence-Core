@@ -1,0 +1,9 @@
+[
+  { "time": "00:00", "confidence": 96.2, "riskScore": 32.1 },
+  { "time": "04:00", "confidence": 95.8, "riskScore": 34.0 },
+  { "time": "08:00", "confidence": 94.9, "riskScore": 38.5 },
+  { "time": "12:00", "confidence": 93.1, "riskScore": 44.2 },
+  { "time": "14:30", "confidence": 94.2, "riskScore": 41.8 },
+  { "time": "18:00 (Est)", "confidence": 92.5, "riskScore": 40.1 },
+  { "time": "22:00 (Est)", "confidence": 91.8, "riskScore": 39.0 }
+]

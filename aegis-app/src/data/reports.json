@@ -1,0 +1,32 @@
+[
+  {
+    "id": "REP-2026-071",
+    "title": "National Energy Resilience Threat Assessment Q3",
+    "classification": "TOP SECRET // NOFORN",
+    "date": "2026-07-21",
+    "author": "AEGIS Autonomous Intelligence Engine",
+    "pages": 18,
+    "format": "PDF / JSON",
+    "summary": "Comprehensive vulnerability matrix of major energy chokepoints and contingency buffer levels."
+  },
+  {
+    "id": "REP-2026-069",
+    "title": "Strait of Hormuz 30-Day Contingency Playbook",
+    "classification": "SECRET // REL TO NATO",
+    "date": "2026-07-19",
+    "author": "StrategicAnalyst AI",
+    "pages": 12,
+    "format": "PDF",
+    "summary": "Detailed strategic petroleum reserve release schedules and tanker rerouting corridors."
+  },
+  {
+    "id": "REP-2026-065",
+    "title": "SCADA Cyber Defensive Readiness Audit",
+    "classification": "CONFIDENTIAL",
+    "date": "2026-07-15",
+    "author": "GridGuard AI",
+    "pages": 24,
+    "format": "PDF",
+    "summary": "Diagnostic analysis of critical pipeline telemetry nodes and firewall telemetry logs."
+  }
+]

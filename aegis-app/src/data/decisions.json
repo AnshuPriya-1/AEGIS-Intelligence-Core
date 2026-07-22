@@ -1,0 +1,63 @@
+[
+  {
+    "id": "OPT-A",
+    "title": "Option A: Emergency SPR Release & Cape Reroute",
+    "rank": 1,
+    "recommended": true,
+    "costImpact": "$142M",
+    "transitTimeImpact": "+6.5 Days",
+    "riskReduction": "-18.4 Risk Points",
+    "reliabilityScore": 96.5,
+    "confidence": 94.2,
+    "summary": "Release 2.4M bpd from Cushing SPR reserves while directing tankers around Cape of Good Hope.",
+    "pros": [
+      "Immediate stabilization of domestic refinery inventory",
+      "Avoids high-risk maritime chokepoints entirely",
+      "Supported by NATO logistics protocols"
+    ],
+    "cons": [
+      "Depletes SPR capacity by 8.5% over 30 days",
+      "Higher fuel freight costs for shippers"
+    ]
+  },
+  {
+    "id": "OPT-B",
+    "title": "Option B: Naval Escort & Hormuz Passage",
+    "rank": 2,
+    "recommended": false,
+    "costImpact": "$85M",
+    "transitTimeImpact": "+1.2 Days",
+    "riskReduction": "-9.2 Risk Points",
+    "reliabilityScore": 81.0,
+    "confidence": 88.5,
+    "summary": "Deploy Coalition naval escorts to convoy commercial crude tankers through Strait of Hormuz.",
+    "pros": [
+      "Minimal transit time disruption",
+      "Lower freight cost compared to Cape diversion"
+    ],
+    "cons": [
+      "High geopolitical tension exposure",
+      "Insurance premium spikes of +320%"
+    ]
+  },
+  {
+    "id": "OPT-C",
+    "title": "Option C: Strategic Import Swap & Grid Rationing",
+    "rank": 3,
+    "recommended": false,
+    "costImpact": "$48M",
+    "transitTimeImpact": "+12.0 Days",
+    "riskReduction": "-4.1 Risk Points",
+    "reliabilityScore": 68.4,
+    "confidence": 79.1,
+    "summary": "Activate energy trade swaps with West African producers and enforce 5% industrial grid load shedding.",
+    "pros": [
+      "Preserves national petroleum reserves",
+      "Lowest capital expenditure"
+    ],
+    "cons": [
+      "Industrial manufacturing disruption",
+      "Requires complex multi-lateral trade agreements"
+    ]
+  }
+]

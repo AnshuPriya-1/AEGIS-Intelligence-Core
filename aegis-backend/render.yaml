@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: aegis-backend
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        sync: false          # set from your Supabase connection string in the Render dashboard
+      - key: REDIS_URL
+        fromService:
+          name: aegis-redis
+          type: redis
+          property: connectionString
+      - key: EIA_API_KEY
+        sync: false
+      - key: GDELT_BASE_URL
+        value: https://api.gdeltproject.org/api/v2
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ANTHROPIC_MODEL
+        value: claude-sonnet-4-6
+      - key: ENV
+        value: production
+      - key: CORS_ORIGINS
+        value: https://your-vercel-app.vercel.app
+      - key: RISK_MODEL_PATH
+        value: ml/artifacts/risk_model.joblib
+
+  - type: redis
+    name: aegis-redis
+    plan: free
+    ipAllowList: []

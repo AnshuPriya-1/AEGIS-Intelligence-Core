@@ -1,0 +1,52 @@
+{
+  "supplyChainHealthScore": 88.4,
+  "confidenceTimeline": [
+    { "hour": "00:00", "score": 96.5 },
+    { "hour": "04:00", "score": 95.8 },
+    { "hour": "08:00", "score": 94.2 },
+    { "hour": "12:00", "score": 92.9 },
+    { "hour": "16:00", "score": 94.8 },
+    { "hour": "20:00", "score": 96.1 }
+  ],
+  "countryImportDependency": [
+    { "country": "Japan", "dependencyPct": 94.2, "status": "danger", "primarySource": "Middle East" },
+    { "country": "Germany", "dependencyPct": 68.5, "status": "warning", "primarySource": "North Sea / US" },
+    { "country": "United States", "dependencyPct": 18.4, "status": "signal", "primarySource": "Domestic / Canada" },
+    { "country": "Singapore", "dependencyPct": 88.0, "status": "warning", "primarySource": "Middle East / SEA" },
+    { "country": "South Korea", "dependencyPct": 91.5, "status": "danger", "primarySource": "Middle East" }
+  ],
+  "eventFrequencies": [
+    { "type": "AIS Divergence", "count": 42 },
+    { "type": "SCADA Cyber Probe", "count": 128 },
+    { "type": "Weather Disturbance", "count": 18 },
+    { "type": "Naval Patrol Event", "count": 31 }
+  ],
+  "supplyStabilityTimeline": [
+    { "day": "Mon", "stability": 91.2 },
+    { "day": "Tue", "stability": 89.5 },
+    { "day": "Wed", "stability": 86.1 },
+    { "day": "Thu", "stability": 88.4 },
+    { "day": "Fri", "stability": 90.8 },
+    { "day": "Sat", "stability": 93.0 },
+    { "day": "Sun", "stability": 92.4 }
+  ],
+  "oilTrendForecast": [
+    { "period": "Now", "brent": 84.1, "wti": 79.5, "projected": false },
+    { "period": "+7d", "brent": 85.6, "wti": 80.9, "projected": true },
+    { "period": "+14d", "brent": 87.2, "wti": 82.4, "projected": true },
+    { "period": "+30d", "brent": 83.9, "wti": 79.1, "projected": true },
+    { "period": "+60d", "brent": 81.0, "wti": 76.8, "projected": true }
+  ],
+  "riskHeatmap": {
+    "regions": ["Hormuz", "Malacca", "Suez", "Red Sea", "North Sea", "Gulf of Mexico"],
+    "weeks": ["W-4", "W-3", "W-2", "W-1", "Now"],
+    "matrix": [
+      [42, 48, 55, 61, 78],
+      [30, 28, 33, 31, 35],
+      [25, 27, 40, 52, 44],
+      [55, 60, 58, 65, 70],
+      [12, 14, 13, 15, 18],
+      [20, 19, 22, 21, 24]
+    ]
+  }
+}

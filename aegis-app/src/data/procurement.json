@@ -1,0 +1,20 @@
+[
+  {
+    "id": "PR-901",
+    "contract": "Strategic Fuel Supply Contract Alpha",
+    "supplier": "Global Energy Corp",
+    "volume": "12.0M Barrels",
+    "deliveryDate": "2026-08-15",
+    "status": "CONFIRMED",
+    "priceLocked": "$78.40 / bbl"
+  },
+  {
+    "id": "PR-902",
+    "contract": "LNG Long-term Offshore Cargo",
+    "supplier": "Pacific Gas Traders",
+    "volume": "4.5M MMBtu",
+    "deliveryDate": "2026-08-22",
+    "status": "IN_TRANSIT",
+    "priceLocked": "$33.20 / MMBtu"
+  }
+]

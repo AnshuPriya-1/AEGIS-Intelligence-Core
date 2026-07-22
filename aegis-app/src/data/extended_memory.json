@@ -1,0 +1,46 @@
+[
+  {
+    "id": "SIM-2026-004",
+    "scenario": "Strait of Hormuz 30-Day Closure",
+    "timestamp": "2026-07-21 14:15 UTC",
+    "riskScore": 68.4,
+    "confidence": 94.2,
+    "costImpact": "$142.0M",
+    "status": "danger",
+    "favorite": true,
+    "summary": "Simulated 30-day blockade of Persian Gulf. Re-routed 48 tankers around Cape of Good Hope and released 2.4M bpd from Cushing SPR reserves."
+  },
+  {
+    "id": "SIM-2026-003",
+    "scenario": "North Sea SCADA Cyber Compromise",
+    "timestamp": "2026-07-19 09:30 UTC",
+    "riskScore": 52.1,
+    "confidence": 96.8,
+    "costImpact": "$48.5M",
+    "status": "warning",
+    "favorite": false,
+    "summary": "Simulated zero-day network probe across 14 compressor stations. GridGuard AI automatically isolated Subnet 4 with 0 grid power loss."
+  },
+  {
+    "id": "SIM-2026-002",
+    "scenario": "Malacca Strait Typhoon Divergence",
+    "timestamp": "2026-07-15 18:45 UTC",
+    "riskScore": 38.0,
+    "confidence": 98.1,
+    "costImpact": "$18.2M",
+    "status": "signal",
+    "favorite": true,
+    "summary": "Simulated Category 2 tropical storm in Malacca Strait. Diverted 22 crude carriers into Singapore bunkering anchorages."
+  },
+  {
+    "id": "SIM-2026-001",
+    "scenario": "Baseline Energy Resilience Sync",
+    "timestamp": "2026-07-10 12:00 UTC",
+    "riskScore": 28.4,
+    "confidence": 99.4,
+    "costImpact": "$0.0M",
+    "status": "signal",
+    "favorite": false,
+    "summary": "Full system diagnostic sync across all 6 global energy corridors. All chokepoints operating within nominal security parameters."
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "ALT-9041",
+    "timestamp": "14:28:10 UTC",
+    "severity": "danger",
+    "title": "Strait of Hormuz Naval Patrol Spike",
+    "location": "Persian Gulf",
+    "coordinates": [26.5667, 56.25],
+    "chokepoint": "Strait of Hormuz",
+    "impact": "HIGH",
+    "summary": "Satellite synthetic aperture radar (SAR) detected 14 non-commercial naval vessels entering maritime corridor Alpha.",
+    "agentAssigned": "GeoRisk-X",
+    "status": "ACTIVE_INVESTIGATION"
+  },
+  {
+    "id": "ALT-9040",
+    "timestamp": "13:55:04 UTC",
+    "severity": "warning",
+    "title": "Malacca Strait Weather Anomaly",
+    "location": "Southeast Asia Corridor",
+    "coordinates": [2.5, 101.5],
+    "chokepoint": "Malacca Strait",
+    "impact": "MEDIUM",
+    "summary": "Tropical storm warnings disrupting 22 crude tankers en route to Tokyo and Shanghai refineries.",
+    "agentAssigned": "SupplyPulse",
+    "status": "MONITORING"
+  },
+  {
+    "id": "ALT-9039",
+    "timestamp": "11:12:30 UTC",
+    "severity": "danger",
+    "title": "Pipeline Cyber Threat Signal",
+    "location": "North Sea Terminal 4",
+    "coordinates": [56.5, 3.2],
+    "chokepoint": "Trans-North Sea Pipeline",
+    "impact": "CRITICAL",
+    "summary": "Anomalous SCADA network packet signatures identified at pressure control sub-station B.",
+    "agentAssigned": "GridGuard AI",
+    "status": "MITIGATED"
+  },
+  {
+    "id": "ALT-9038",
+    "timestamp": "09:40:18 UTC",
+    "severity": "signal",
+    "title": "Strategic Reserve Injection Complete",
+    "location": "Cushing, Oklahoma",
+    "coordinates": [35.98, -96.76],
+    "chokepoint": "US Central Hub",
+    "impact": "POSITIVE",
+    "summary": "Completed scheduled transfer of 4.2M barrels into Strategic Petroleum Reserve Cavern 3.",
+    "agentAssigned": "StrategicAnalyst",
+    "status": "RESOLVED"
+  }
+]

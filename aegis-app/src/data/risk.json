@@ -1,0 +1,19 @@
+{
+  "globalRiskScore": 41.8,
+  "riskLevel": "ELEVATED",
+  "status": "warning",
+  "confidenceScore": 94.2,
+  "lastUpdated": "2026-07-21 14:30:00 UTC",
+  "breakdown": [
+    { "category": "Geopolitical Threat", "score": 68.4, "status": "danger", "weight": "35%" },
+    { "category": "Chokepoint Vulnerability", "score": 52.1, "status": "warning", "weight": "25%" },
+    { "category": "Cyber Grid Exposure", "score": 24.5, "status": "signal", "weight": "20%" },
+    { "category": "Supply Shortage Index", "score": 18.2, "status": "signal", "weight": "20%" }
+  ],
+  "factors": [
+    "Hormuz naval presence +15%",
+    "SPR capacity optimum (+4.2M bbl)",
+    "Red Sea route bypass adding 8 days transit",
+    "Nordic grid synchronization completed"
+  ]
+}

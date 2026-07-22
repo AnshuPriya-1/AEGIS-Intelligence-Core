@@ -1,0 +1,55 @@
+{
+  "summary": "SHAP (SHapley Additive exPlanations) model feature contribution breakdown for current Global Risk Score (41.8 / 100).",
+  "baseRiskScore": 25.0,
+  "predictedRiskScore": 41.8,
+  "features": [
+    {
+      "name": "Strait of Hormuz Naval Vessel Count",
+      "value": "14 Patrol Vessels",
+      "contribution": 12.4,
+      "type": "positive",
+      "importance": 1,
+      "description": "Satellite SAR radar confirmed non-commercial naval presence within maritime corridor Alpha."
+    },
+    {
+      "name": "Red Sea Divergence Transit Lag",
+      "value": "+8.2 Days Average",
+      "contribution": 8.1,
+      "type": "positive",
+      "importance": 2,
+      "description": "Commercial crude carriers re-routed around Cape of Good Hope increasing transit duration."
+    },
+    {
+      "name": "Dutch TTF Gas Price Dip",
+      "value": "€34.80 / MWh (-1.8%)",
+      "contribution": -4.2,
+      "type": "negative",
+      "importance": 3,
+      "description": "High European LNG storage levels mitigating regional gas deficit threats."
+    },
+    {
+      "name": "Cushing SPR Buffer Reserve",
+      "value": "114 Days Capacity",
+      "contribution": -3.5,
+      "type": "negative",
+      "importance": 4,
+      "description": "Recent 4.2M barrel crude injection provides domestic cushion against import shocks."
+    },
+    {
+      "name": "Subsea Interconnector Telemetry Status",
+      "value": "100% Operational",
+      "contribution": -2.0,
+      "type": "negative",
+      "importance": 5,
+      "description": "Optimal power frequency stability across Nordic-Central European interconnectors."
+    },
+    {
+      "name": "Malacca Strait Typhoon Warning",
+      "value": "Category 2 Storm",
+      "contribution": 6.0,
+      "type": "positive",
+      "importance": 6,
+      "description": "Slowing 22 crude tankers en route to Tokyo and Shanghai refineries."
+    }
+  ]
+}

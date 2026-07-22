@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0A0E14;
+  --panel: #12181F;
+  --border: #202834;
+  --text: #E7ECF2;
+  --muted: #8B95A5;
+  --signal: #00D9C0;
+  --danger: #FF4757;
+  --warning: #FFB800;
+
+  --panel-glass: rgba(18, 24, 31, 0.85);
+  --glass-border: rgba(32, 40, 52, 0.6);
+  --glow-signal: rgba(0, 217, 192, 0.15);
+}
+
+[data-theme="light"] {
+  --bg: #F5F7FA;
+  --panel: #FFFFFF;
+  --border: #E2E6EC;
+  --text: #101820;
+  --muted: #5C6670;
+  --signal: #00A896;
+  --danger: #E0323F;
+  --warning: #D69100;
+
+  --panel-glass: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(226, 230, 236, 0.8);
+  --glow-signal: rgba(0, 168, 150, 0.12);
+}
+
+/* Smooth transition for theme switching */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Canvas & Three.js container styles */
+canvas {
+  touch-action: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Custom Utilities */
+.glass-panel {
+  background: var(--panel-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+.radar-sweep {
+  background: conic-gradient(from 0deg at 50% 50%, rgba(0, 217, 192, 0.2) 0deg, transparent 60deg, transparent 360deg);
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(200%); }
+}
